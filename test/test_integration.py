@@ -1270,7 +1270,7 @@ class TestRequestsAdapter(SocketLevelTest):
         self.tear_down()
 
     def test_returned_adapter_http2(self):
-        host = "example.com"
+        host = "google.com"
         port = "443"
 
         s = requests.Session()
