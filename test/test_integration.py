@@ -11,6 +11,7 @@ import threading
 import time
 import hyper
 import hyper.http11.connection
+import hyper.http20.connection
 import pytest
 from contextlib import contextmanager
 from mock import patch
@@ -1267,3 +1268,27 @@ class TestRequestsAdapter(SocketLevelTest):
 
         recv_event.set()
         self.tear_down()
+
+    def test_returned_adapter_http2(self):
+        host = "httpbin.org"
+        port = "443"
+
+        s = requests.Session()
+        s.mount('https://%s' % host, HTTP20Adapter())
+        r = s.get(
+            'https://%s:%s/' % (host, port),
+        )
+
+        assert r.connection_class == hyper.http20.connection.HTTP20Connection
+
+    def test_returned_adapter_http1(self):
+        host = "example.com"
+        port = "443"
+
+        s = requests.Session()
+        s.mount('https://%s' % host, HTTP20Adapter())
+        r = s.get(
+            'https://%s:%s/' % (host, port),
+        )
+
+        assert r.connection_class == hyper.http11.connection.HTTP11Connection
