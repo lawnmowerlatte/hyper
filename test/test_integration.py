@@ -1269,7 +1269,7 @@ class TestRequestsAdapter(SocketLevelTest):
         recv_event.set()
         self.tear_down()
 
-    def test_connection_class_http2(self):
+    def test_version_http2(self):
         host = "google.com"
         port = "443"
 
@@ -1279,9 +1279,9 @@ class TestRequestsAdapter(SocketLevelTest):
             'https://%s:%s/' % (host, port),
         )
 
-        assert r.connection_class == hyper.http20.connection.HTTP20Connection
+        assert r.raw.version.value == "HTTP/2.0"
 
-    def test_connection_class_http1(self):
+    def test_version_http1(self):
         host = "httpbin.org"
         port = "443"
 
@@ -1291,4 +1291,4 @@ class TestRequestsAdapter(SocketLevelTest):
             'https://%s:%s/' % (host, port),
         )
 
-        assert r.connection_class == hyper.http11.connection.HTTP11Connection
+        assert r.raw.version.value == "HTTP/1.1"

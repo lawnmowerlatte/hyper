@@ -89,8 +89,6 @@ class HTTP20Adapter(HTTPAdapter):
 
         r = self.build_response(request, resp)
 
-        r.connection_class = type(conn._conn)
-
         if not stream:
             r.content
 
